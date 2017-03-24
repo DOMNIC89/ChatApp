@@ -1,3 +1,5 @@
 <resources>
   <string name="app_name">ChatApp</string>
+  <string name="login_btn_label">Login</string>
+  <string name="compose_hint">Write a message</string>
 </resources>

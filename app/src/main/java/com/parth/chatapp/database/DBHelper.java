@@ -1,5 +1,6 @@
 package com.parth.chatapp.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -25,13 +26,17 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // TODO: 21/3/17 Create table for chat and users
         db.execSQL(Chat.CHAT_TABLE);
         db.execSQL(User.USER_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + Chat.CHAT_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + User.USER_TABLE_NAME);
+    }
 
+    public long insert(String tableName, ContentValues contentValues) {
+        return getWritableDatabase().insert(tableName, null, contentValues);
     }
 }

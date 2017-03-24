@@ -34,8 +34,7 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
             view.onInvalidInput();
             return;
         }
-
-        view.moveToNextScreen();
+        view.moveToNextScreen(userName);
     }
 
     private boolean isValid(String userName) {

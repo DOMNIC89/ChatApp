@@ -1,6 +1,9 @@
 package com.parth.chatapp.model;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.support.annotation.IntDef;
+import com.parth.chatapp.database.DBHelper;
 
 public class Chat {
 
@@ -45,6 +48,15 @@ public class Chat {
 
     public void setChatStatus(@ChatStatus int chatStatus) {
         this.chatStatus = chatStatus;
+    }
+
+    public void insertChat(Context context) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(MESSAGE, message);
+        contentValues.put(TIMESTAMP, timestamp);
+        contentValues.put(USER_NAME, userName);
+        contentValues.put(CHATSTATUS, chatStatus);
+        DBHelper.getInstance(context).insert(CHAT_TABLE_NAME, contentValues);
     }
 
     @IntDef({SENT, FAILED, SENDING})

@@ -1,7 +1,9 @@
-import android.app.Application;
+package com.parth.chatapp;
+
+import android.support.multidex.MultiDexApplication;
 import com.parth.chatapp.database.DBHelper;
 
-public class ChatApplication extends Application {
+public class ChatApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {

@@ -7,6 +7,6 @@ public interface MainActivityPresenter extends BasePresenter {
     interface View {
         void onInvalidInput();
 
-        void moveToNextScreen();
+        void moveToNextScreen(String name);
     }
 }

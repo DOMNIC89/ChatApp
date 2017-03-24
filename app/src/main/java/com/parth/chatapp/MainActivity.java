@@ -58,7 +58,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
     }
 
     @Override
-    public void moveToNextScreen() {
-        // TODO: 17/3/17 Add next screen
+    public void moveToNextScreen(String name) {
+        Preferences.setUserName(this, name);
+        InboxActivity.launch(this, name);
     }
 }
