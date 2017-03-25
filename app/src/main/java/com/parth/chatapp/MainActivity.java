@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         presenter = new MainActivityPresenterImpl(this);
+        presenter.checkIfUserExists(Preferences.getUserName(this));
         Button btn_submit = (Button) findViewById(R.id.submit);
         til_userNameContainer = (TextInputLayout) findViewById(R.id.user_name);
         tiet_userName = (TextInputEditText) findViewById(R.id.user_name_et);

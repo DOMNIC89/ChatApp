@@ -18,7 +18,8 @@
     </activity>
     <activity android:name=".InboxActivity"
         android:screenOrientation="portrait" />
-    <activity android:name=".ConversationActivity"></activity>
+    <activity android:name=".ConversationActivity"
+        android:windowSoftInputMode="adjustPan"/>
   </application>
 
 </manifest>

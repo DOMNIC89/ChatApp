@@ -56,6 +56,7 @@ public class InboxActivity extends AppCompatActivity implements InputDialog.OnIn
     @Override
     public void onPositiveButtonClicked(String name) {
         if (!TextUtils.isEmpty(name)) {
+            AppSingleton.INSTANCE.currentUserChat(name);
             ConversationActivity.launch(this, name);
         }
     }

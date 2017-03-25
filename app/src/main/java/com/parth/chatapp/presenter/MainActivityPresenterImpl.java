@@ -1,5 +1,7 @@
 package com.parth.chatapp.presenter;
 
+import com.parth.chatapp.AppSingleton;
+
 public class MainActivityPresenterImpl implements MainActivityPresenter {
 
     private MainActivityPresenter.View view;
@@ -34,13 +36,19 @@ public class MainActivityPresenterImpl implements MainActivityPresenter {
             view.onInvalidInput();
             return;
         }
+        AppSingleton.INSTANCE.setLoggedInUserName(userName);
         view.moveToNextScreen(userName);
     }
 
-    private boolean isValid(String userName) {
-        if (userName != null && userName.length() > 0) {
-            return true;
+    @Override
+    public void checkIfUserExists(String userName) {
+        if (isValid(userName)) {
+            AppSingleton.INSTANCE.setLoggedInUserName(userName);
+            view.moveToNextScreen(userName);
         }
-        return false;
+    }
+
+    private boolean isValid(String userName) {
+        return userName != null && userName.trim().length() > 0;
     }
 }
