@@ -76,13 +76,15 @@ public class ConversationListAdapter extends RecyclerView.Adapter {
 
     public void addChat(Chat chat) {
         lists.add(chat);
-        notifyItemInserted(0);
+        notifyItemInserted(lists.size());
     }
 
     public void updateChat(Chat chat) {
         int position = lists.indexOf(chat);
-        lists.updateItemAt(position, chat);
-        notifyItemChanged(position);
+        if (position != -1) {
+            lists.updateItemAt(position, chat);
+            notifyItemChanged(position);
+        }
     }
 
     @Override

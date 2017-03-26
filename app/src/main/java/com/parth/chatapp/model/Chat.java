@@ -29,7 +29,12 @@ public class Chat {
     public static final int FAILED  = 0;
     public static final int SENDING = -1;
 
+    public static final int SELF = 0;
+    public static final int COUNTERPART = 1;
+
     private String userName;
+    private String to;
+    private String from;
     private String message;
     private long timestamp;
     private @ChatStatus int chatStatus;
@@ -56,6 +61,14 @@ public class Chat {
 
     public int getChatStatus() {
         return chatStatus;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 
     public void setChatStatus(@ChatStatus int chatStatus) {
@@ -109,6 +122,23 @@ public class Chat {
         return list;
     }
 
+    public static List<String> getUsers(Context context) {
+        String query = String.format(Locale.ENGLISH, "select DISTINCT %s, MAX(%s) FROM %s GROUP BY %s ORDER BY %s ASC, %s", USER_NAME,
+            TIMESTAMP, CHAT_TABLE_NAME, USER_NAME, TIMESTAMP, USER_NAME);
+        Cursor cursor = DBHelper.getInstance(context).rawQuery(query, null);
+        List<String> list = new ArrayList<>();
+        if (cursor != null) {
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++, cursor.moveToNext()) {
+                String userName = cursor.getString(cursor.getColumnIndex(USER_NAME));
+                if (!userName.equals(AppSingleton.INSTANCE.getLoggedInUserName())) {
+                    list.add(userName);
+                }
+            }
+        }
+        return list;
+    }
+
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -125,7 +155,9 @@ public class Chat {
     public Chat fromJSON(String messageReceived) {
         try {
             JSONObject jsonObject = new JSONObject(messageReceived);
-
+            this.message = jsonObject.getString(MESSAGE);
+            this.timestamp = jsonObject.getLong(TIMESTAMP);
+            this.userName = jsonObject.getString(USER_NAME);
             return this;
         } catch (JSONException e) {
             e.printStackTrace();
@@ -135,5 +167,9 @@ public class Chat {
 
     @IntDef({SENT, FAILED, SENDING})
     @interface ChatStatus {
+    }
+
+    @IntDef({SELF, COUNTERPART})
+    @interface DIRECTION {
     }
 }

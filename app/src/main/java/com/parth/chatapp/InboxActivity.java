@@ -5,14 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.parth.chatapp.adapter.InboxAdapter;
+import com.parth.chatapp.model.Chat;
 import com.parth.chatapp.widget.InputDialog;
+import java.util.List;
 
-public class InboxActivity extends AppCompatActivity implements InputDialog.OnInputDialogListener {
+public class InboxActivity extends AppCompatActivity implements InputDialog.OnInputDialogListener, InboxAdapter.InboxItemClickListener {
 
     private static final String ARG_NAME = "arg_name";
 
@@ -29,6 +33,10 @@ public class InboxActivity extends AppCompatActivity implements InputDialog.OnIn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox);
         rv_userChatList = (RecyclerView) findViewById(R.id.user_chat_list);
+        List<String> list = Chat.getUsers(this);
+        rv_userChatList.setLayoutManager(new LinearLayoutManager(this));
+        InboxAdapter adapter = new InboxAdapter(list, this);
+        rv_userChatList.setAdapter(adapter);
     }
 
     @Override
@@ -64,5 +72,10 @@ public class InboxActivity extends AppCompatActivity implements InputDialog.OnIn
     @Override
     public void onCancelButtonClicked() {
 
+    }
+
+    @Override
+    public void onItemClicked(String userName) {
+        onPositiveButtonClicked(userName);
     }
 }

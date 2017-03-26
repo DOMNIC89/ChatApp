@@ -9,5 +9,6 @@ public class ChatApplication extends MultiDexApplication {
     public void onCreate() {
         super.onCreate();
         DBHelper.getInstance(this);
+        AppSingleton.INSTANCE.setContext(this);
     }
 }

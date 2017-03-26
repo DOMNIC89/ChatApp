@@ -62,5 +62,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityPrese
     public void moveToNextScreen(String name) {
         Preferences.setUserName(this, name);
         InboxActivity.launch(this, name);
+        finish();
     }
 }

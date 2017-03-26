@@ -51,6 +51,10 @@ public class DBHelper extends SQLiteOpenHelper {
         return getWritableDatabase().query(tableName, columns, where, null, null, null, order);
     }
 
+    public Cursor rawQuery(String query, String[] selectionArgs) {
+        return getWritableDatabase().rawQuery(query, null);
+    }
+
     /*public Cursor getData(String tableName, ) {
         getWritableDatabase().query(true, )
     }*/

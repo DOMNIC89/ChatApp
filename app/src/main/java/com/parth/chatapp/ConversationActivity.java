@@ -11,16 +11,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import com.parth.chatapp.adapter.ConversationListAdapter;
 import com.parth.chatapp.model.Chat;
+import com.parth.chatapp.mqtt.MqttConnect;
 import com.parth.chatapp.presenter.ConversationPresenter;
 import com.parth.chatapp.presenter.ConversationPresenterImpl;
 import java.util.List;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 
-public class ConversationActivity extends AppCompatActivity implements ConversationPresenter.View{
+public class ConversationActivity extends AppCompatActivity implements ConversationPresenter.View, IMqttActionListener{
 
     private static final String ARG_USER_NAME = "arg_user_name";
     private RecyclerView rv_chatList;
     private EditText et_composer;
-    private ImageView iv_send;
     private ConversationListAdapter adapter;
 
     private ConversationPresenter presenter;
@@ -40,12 +43,14 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         rv_chatList.setLayoutManager(new LinearLayoutManager(this));
         List<Chat> list = Chat.getAllChatsFromUser(this, AppSingleton.INSTANCE.getCurentUserChat());
         adapter = new ConversationListAdapter(list);
+        MqttConnect.getInstance().setMqttCallback((MqttCallback) presenter);
+        MqttConnect.getInstance().connectMqtt(this.getApplicationContext(), AppSingleton.INSTANCE.getLoggedInUserName());
         StringBuilder channelName = new StringBuilder();
         channelName.append(AppSingleton.INSTANCE.getLoggedInUserName()).append("/").append(AppSingleton.INSTANCE.getCurentUserChat());
         presenter.subscribeChannel(channelName.toString());
         rv_chatList.setAdapter(adapter);
         et_composer = (EditText) findViewById(R.id.compose_et);
-        iv_send = (ImageView) findViewById(R.id.send);
+        ImageView iv_send = (ImageView) findViewById(R.id.send);
         iv_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,8 +68,23 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     }
 
     @Override
-    public void updateChat(Chat chat) {
+    public void updateChat(final Chat chat) {
         chat.update(this);
-        adapter.updateChat(chat);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.updateChat(chat);
+            }
+        });
+    }
+
+    @Override
+    public void onSuccess(IMqttToken asyncActionToken) {
+
+    }
+
+    @Override
+    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+
     }
 }

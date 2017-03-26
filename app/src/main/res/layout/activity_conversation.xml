@@ -8,17 +8,18 @@
 
   <android.support.v7.widget.RecyclerView
       android:id="@+id/recyclerView"
-      android:layout_width="366dp"
-      android:layout_height="444dp"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
       android:layout_marginBottom="8dp"
+      android:layout_above="@+id/message_compose_container"
       android:layout_marginLeft="8dp"
       android:layout_marginRight="8dp"
       android:layout_marginTop="8dp" />
 
   <RelativeLayout
+      android:id="@+id/message_compose_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_below="@id/recyclerView"
       android:layout_alignParentBottom="true"
       android:layout_marginLeft="@dimen/dp16"
       android:layout_marginRight="@dimen/dp16">
