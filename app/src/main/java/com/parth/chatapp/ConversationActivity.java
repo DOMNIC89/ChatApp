@@ -41,12 +41,12 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
         presenter = new ConversationPresenterImpl(this);
         rv_chatList = (RecyclerView) findViewById(R.id.recyclerView);
         rv_chatList.setLayoutManager(new LinearLayoutManager(this));
-        List<Chat> list = Chat.getAllChatsFromUser(this, AppSingleton.INSTANCE.getCurentUserChat());
+        List<Chat> list = Chat.getAllChatsFromUser(this, AppSingleton.INSTANCE.getCurrentUserChat());
         adapter = new ConversationListAdapter(list);
         MqttConnect.getInstance().setMqttCallback((MqttCallback) presenter);
         MqttConnect.getInstance().connectMqtt(this.getApplicationContext(), AppSingleton.INSTANCE.getLoggedInUserName());
         StringBuilder channelName = new StringBuilder();
-        channelName.append(AppSingleton.INSTANCE.getLoggedInUserName()).append("/").append(AppSingleton.INSTANCE.getCurentUserChat());
+        channelName.append(AppSingleton.INSTANCE.getLoggedInUserName()).append("/").append(AppSingleton.INSTANCE.getCurrentUserChat());
         presenter.subscribeChannel(channelName.toString());
         rv_chatList.setAdapter(adapter);
         et_composer = (EditText) findViewById(R.id.compose_et);

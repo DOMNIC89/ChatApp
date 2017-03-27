@@ -25,7 +25,7 @@
     <activity android:name=".InboxActivity"
         android:screenOrientation="portrait" />
     <activity android:name=".ConversationActivity"
-        android:windowSoftInputMode="adjustPan"/>
+        android:windowSoftInputMode="adjustResize"/>
 
     <service android:name="org.eclipse.paho.android.service.MqttService" />
   </application>

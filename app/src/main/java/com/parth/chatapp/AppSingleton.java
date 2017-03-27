@@ -21,7 +21,7 @@ public enum AppSingleton {
         this.context = context;
     }
 
-    public String getCurentUserChat() {
+    public String getCurrentUserChat() {
         return userName;
     }
 

@@ -8,4 +8,6 @@
   <dimen name="dp4">4dp</dimen>
   <dimen name="dp48">48dp</dimen>
   <dimen name="dp2">2dp</dimen>
+  <dimen name="dp1">1dp</dimen>
+  <dimen name="text_12sp">12sp</dimen>
 </resources>

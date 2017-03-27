@@ -17,16 +17,18 @@ public class Chat {
     public static final String USER_NAME = "username";
     public static final String MESSAGE = "message";
     public static final String TIMESTAMP = "timestamp";
+    public static final String TO = "to";
     public static final String CHATSTATUS = "chatstatus";
     public static final String CHAT_TABLE_NAME = "chattable";
-    public static final String CHAT_TABLE = "CREATE TABLE "+CHAT_TABLE_NAME+" ("+MESSAGE+" TEXT, " + USER_NAME +" TEXT, " + CHATSTATUS+" "
-        + "INTEGER, " + TIMESTAMP +" DATETIME)";
+    public static final String CHAT_TABLE =
+        "CREATE TABLE " + CHAT_TABLE_NAME + " (" + MESSAGE + " TEXT, " + USER_NAME + " TEXT, " + CHATSTATUS + " "
+            + "INTEGER, " + TIMESTAMP + " DATETIME, `" + TO + "` TEXT)";
     public static final String[] CHAT_PROJECTION = new String[] {
         MESSAGE, TIMESTAMP, USER_NAME, CHATSTATUS
     };
 
     public static final int SENT = 1;
-    public static final int FAILED  = 0;
+    public static final int FAILED = 0;
     public static final int SENDING = -1;
 
     public static final int SELF = 0;
@@ -37,7 +39,9 @@ public class Chat {
     private String from;
     private String message;
     private long timestamp;
-    private @ChatStatus int chatStatus;
+    private
+    @ChatStatus
+    int chatStatus;
 
     public Chat(String userName, String message, long timestamp) {
         this.userName = userName;
@@ -45,7 +49,8 @@ public class Chat {
         this.timestamp = timestamp;
     }
 
-    public Chat() {}
+    public Chat() {
+    }
 
     public String getUserName() {
         return userName;
@@ -81,6 +86,7 @@ public class Chat {
         contentValues.put(TIMESTAMP, timestamp);
         contentValues.put(USER_NAME, userName);
         contentValues.put(CHATSTATUS, chatStatus);
+        contentValues.put(TO, to);
         DBHelper.getInstance(context).insert(CHAT_TABLE_NAME, contentValues);
     }
 
@@ -90,17 +96,17 @@ public class Chat {
         contentValues.put(TIMESTAMP, timestamp);
         contentValues.put(USER_NAME, userName);
         contentValues.put(CHATSTATUS, chatStatus);
+        contentValues.put(TO, to);
         StringBuilder whereBuilder = new StringBuilder();
         whereBuilder.append(USER_NAME).append(" = ?");
         whereBuilder.append(" and ");
-        whereBuilder.append(TIMESTAMP).append( "= ?");
-        String[] args = new String[]{userName, String.valueOf(timestamp)};
+        whereBuilder.append(TIMESTAMP).append("= ?");
+        String[] args = new String[] { userName, String.valueOf(timestamp) };
         DBHelper.getInstance(context).update(CHAT_TABLE_NAME, contentValues, whereBuilder.toString(), args);
     }
 
     public static List<Chat> getAllChatsFromUser(Context context, String currentUserChat) {
-        final String where = String.format(Locale.ENGLISH, "%s = \"%s\" OR %s = \"%s\"", USER_NAME, currentUserChat, USER_NAME, AppSingleton
-            .INSTANCE.getLoggedInUserName());
+        final String where = String.format(Locale.ENGLISH, "%s = \"%s\" OR `%s` = \"%s\"", USER_NAME, currentUserChat, TO, currentUserChat);
         final String orderBy = String.format(Locale.ENGLISH, "%s ASC", TIMESTAMP);
         Cursor cursor = DBHelper.getInstance(context).query(CHAT_TABLE_NAME, CHAT_PROJECTION, where, orderBy);
         List<Chat> list = new ArrayList<>();
@@ -109,7 +115,8 @@ public class Chat {
             for (int i = 0; i < cursor.getCount(); i++, cursor.moveToNext()) {
                 String message = cursor.getString(cursor.getColumnIndex(MESSAGE));
                 String userName = cursor.getString(cursor.getColumnIndex(USER_NAME));
-                @ChatStatus int  chatStatus = cursor.getInt(cursor.getColumnIndex(CHATSTATUS));
+                @ChatStatus
+                int chatStatus = cursor.getInt(cursor.getColumnIndex(CHATSTATUS));
                 long timestamp = cursor.getLong(cursor.getColumnIndex(TIMESTAMP));
                 Chat chat = new Chat(userName, message, timestamp);
                 chat.setChatStatus(chatStatus);
@@ -139,6 +146,11 @@ public class Chat {
         return list;
     }
 
+    public static Chat getLastChat(Context context, String userName) {
+        List<Chat> chatList = getAllChatsFromUser(context, userName);
+        return chatList.get(chatList.size() - 1);
+    }
+
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
@@ -165,11 +177,11 @@ public class Chat {
         }
     }
 
-    @IntDef({SENT, FAILED, SENDING})
+    @IntDef({ SENT, FAILED, SENDING })
     @interface ChatStatus {
     }
 
-    @IntDef({SELF, COUNTERPART})
+    @IntDef({ SELF, COUNTERPART })
     @interface DIRECTION {
     }
 }

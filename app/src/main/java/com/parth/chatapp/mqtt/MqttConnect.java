@@ -10,13 +10,9 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class MqttConnect {
-    
-    private Context context;
     private MqttCallback callback;
     private MqttAndroidClient client;
-    private String subscribeTopic;
     private static MqttConnect instance;
-
 
     private MqttConnect() {
 
@@ -29,7 +25,7 @@ public class MqttConnect {
         return instance;
     }
 
-    public void setMqttCallback(MqttCallback mqttCallback){
+    public void setMqttCallback(MqttCallback mqttCallback) {
         this.callback = mqttCallback;
     }
 
@@ -72,7 +68,6 @@ public class MqttConnect {
     }
 
     public void subscribe(String topic) {
-        MqttConnect.this.subscribeTopic = topic;
         if (client != null && client.isConnected()) {
             try {
                 client.subscribe(topic, 1);
@@ -82,19 +77,13 @@ public class MqttConnect {
         }
     }
 
-    public IMqttToken publish(String topic, String message) {
-        IMqttToken token;
+    public void publish(String topic, String message) {
         if (client != null && client.isConnected()) {
             try {
-                token = client.publish(topic, message.getBytes(), 1, true);
-                return token;
+                client.publish(topic, message.getBytes(), 1, true);
             } catch (MqttException e) {
                 e.printStackTrace();
             }
         }
-        return null;
     }
-
-
-
 }

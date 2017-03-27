@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/inbox_item_container"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,22 +10,49 @@
 
   <View
       android:layout_width="match_parent"
-      android:layout_height="@dimen/dp2"
-      android:background="@android:color/holo_blue_bright" />
+      android:layout_height="@dimen/dp1"
+      android:layout_marginLeft="@dimen/dp16"
+      android:layout_marginRight="@dimen/dp16"
+      android:background="@color/colorPrimaryDark" />
 
   <TextView
       android:id="@+id/user_name_inbox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:textSize="@dimen/text_16sp"
-      android:padding="@dimen/dp10"
+      android:layout_marginTop="@dimen/dp10"
+      android:textStyle="bold"
       tools:text="sample"/>
+
+  <TextView
+      android:id="@+id/timestamp_inbox"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentRight="true"
+      android:layout_marginTop="@dimen/dp10"
+      android:layout_marginLeft="@dimen/dp16"
+      android:layout_marginRight="@dimen/dp16"
+      android:textSize="@dimen/text_12sp"
+      tools:text="10:00AM"/>
+
+  <TextView
+      android:id="@+id/message_inbox"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/user_name_inbox"
+      android:textSize="@dimen/text_14sp"
+      android:layout_marginTop="@dimen/dp4"
+      tools:text="Chat message"/>
 
   <View
       android:layout_width="match_parent"
-      android:layout_height="@dimen/dp2"
-      android:background="@android:color/holo_blue_bright" />
+      android:layout_height="@dimen/dp1"
+      android:layout_marginTop="@dimen/dp10"
+      android:layout_marginLeft="@dimen/dp16"
+      android:layout_marginRight="@dimen/dp16"
+      android:layout_below="@id/message_inbox"
+      android:background="@color/colorPrimaryDark" />
 
 
 
-</LinearLayout>
+</RelativeLayout>

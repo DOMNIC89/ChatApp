@@ -35,7 +35,7 @@ public class InboxActivity extends AppCompatActivity implements InputDialog.OnIn
         rv_userChatList = (RecyclerView) findViewById(R.id.user_chat_list);
         List<String> list = Chat.getUsers(this);
         rv_userChatList.setLayoutManager(new LinearLayoutManager(this));
-        InboxAdapter adapter = new InboxAdapter(list, this);
+        InboxAdapter adapter = new InboxAdapter(this, list, this);
         rv_userChatList.setAdapter(adapter);
     }
 
