@@ -17,12 +17,12 @@ public class Chat {
     public static final String USER_NAME = "username";
     public static final String MESSAGE = "message";
     public static final String TIMESTAMP = "timestamp";
-    public static final String TO = "to";
+    public static final String TO = "`to`";
     public static final String CHATSTATUS = "chatstatus";
     public static final String CHAT_TABLE_NAME = "chattable";
     public static final String CHAT_TABLE =
         "CREATE TABLE " + CHAT_TABLE_NAME + " (" + MESSAGE + " TEXT, " + USER_NAME + " TEXT, " + CHATSTATUS + " "
-            + "INTEGER, " + TIMESTAMP + " DATETIME, `" + TO + "` TEXT)";
+            + "INTEGER, " + TIMESTAMP + " DATETIME, " + TO + " TEXT)";
     public static final String[] CHAT_PROJECTION = new String[] {
         MESSAGE, TIMESTAMP, USER_NAME, CHATSTATUS
     };
@@ -106,7 +106,7 @@ public class Chat {
     }
 
     public static List<Chat> getAllChatsFromUser(Context context, String currentUserChat) {
-        final String where = String.format(Locale.ENGLISH, "%s = \"%s\" OR `%s` = \"%s\"", USER_NAME, currentUserChat, TO, currentUserChat);
+        final String where = String.format(Locale.ENGLISH, "%s = \"%s\" OR %s = \"%s\"", USER_NAME, currentUserChat, TO, currentUserChat);
         final String orderBy = String.format(Locale.ENGLISH, "%s ASC", TIMESTAMP);
         Cursor cursor = DBHelper.getInstance(context).query(CHAT_TABLE_NAME, CHAT_PROJECTION, where, orderBy);
         List<Chat> list = new ArrayList<>();
