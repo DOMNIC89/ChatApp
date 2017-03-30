@@ -65,6 +65,7 @@ public class ConversationActivity extends AppCompatActivity implements Conversat
     public void insertChat(Chat chat) {
         chat.insertChat(this);
         adapter.addChat(chat);
+        rv_chatList.smoothScrollToPosition(adapter.getItemCount() - 1);
     }
 
     @Override

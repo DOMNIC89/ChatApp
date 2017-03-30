@@ -24,7 +24,6 @@ public class ConversationPresenterImpl implements ConversationPresenter, MqttCal
         final Chat chat = new Chat(AppSingleton.INSTANCE.getLoggedInUserName(), message, System.currentTimeMillis());
         chat.setTo(AppSingleton.INSTANCE.getCurrentUserChat());
         chat.setChatStatus(Chat.SENDING);
-        chat.setTo(AppSingleton.INSTANCE.getCurrentUserChat());
         view.insertChat(chat);
         String topic = AppSingleton.INSTANCE.getCurrentUserChat() + "/" + AppSingleton.INSTANCE.getLoggedInUserName();
         MqttConnect.getInstance().publish(topic, chat.toJSON().toString());
